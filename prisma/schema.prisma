@@ -1,0 +1,30 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Participant {
+  id            String        @id @default(auto()) @map("_id") @db.ObjectId
+  name          String        @unique
+  email         String        @unique
+  hasSpun       Boolean       @default(false)
+  matchedWith   Participant?  @relation("MatchedWith", fields: [matchedWithId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  matchedWithId String?       @db.ObjectId
+  matchedBy     Participant[] @relation("MatchedWith")
+  otpCode       String?
+  otpExpiresAt  DateTime?
+}
+
+model AdminSetting {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  passwordHash    String
+  role            String  @unique
+  matchingEnabled Boolean @default(true)
+}
+
+
+
