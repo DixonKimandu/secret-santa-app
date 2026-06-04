@@ -8,8 +8,8 @@ async function ensureAdminInitialized() {
 
   const existingAdmins = await prisma.adminSetting.count();
   if (existingAdmins === 0) {
-    const adminHash = bcrypt.hashSync('default-admin-password', 10);
-    const superadminHash = bcrypt.hashSync('default-superadmin-password', 10);
+    const adminHash = bcrypt.hashSync('admin123', 10);
+    const superadminHash = bcrypt.hashSync('superadmin123', 10);
 
     // MongoDB doesn't support skipDuplicates, so we use upsert instead
     await prisma.adminSetting.upsert({
